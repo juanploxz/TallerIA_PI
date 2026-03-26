@@ -83,7 +83,6 @@ def statistics_view(request):
     all_movies = Movie.objects.all()
     movie_counts_by_year = {}
     for movie in all_movies:
-        print(movie.genre)
         year = movie.year if movie.year else "None"
         if year in movie_counts_by_year:
             movie_counts_by_year[year] += 1

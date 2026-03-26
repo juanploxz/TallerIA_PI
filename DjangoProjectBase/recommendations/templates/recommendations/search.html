@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Movie Recommendations</h1>
+    <form action="" method="get" class="mb-4">
+        <div class="mb-3">
+            <label for="prompt" class="form-label">Describe what you want to watch</label>
+            <input type="text" class="form-control" id="prompt" name="prompt" value="{{ prompt }}" placeholder="Example: pelicula de la Segunda Guerra Mundial">
+        </div>
+        <button type="submit" class="btn btn-primary">Recommend</button>
+    </form>
+
+    {% if error %}
+    <div class="alert alert-warning">{{ error }}</div>
+    {% endif %}
+
+    {% if movie %}
+    <div class="card" style="max-width: 720px;">
+        <img src="{{ movie.image.url }}" class="card-img-top" alt="{{ movie.title }}">
+        <div class="card-body">
+            <h2 class="card-title h4">{{ movie.title }}</h2>
+            <p class="card-text">{{ movie.description }}</p>
+            <p class="card-text"><strong>Genre:</strong> {{ movie.genre }}</p>
+            <p class="card-text"><strong>Year:</strong> {{ movie.year }}</p>
+            <p class="card-text"><strong>Similarity:</strong> {{ similarity|floatformat:4 }}</p>
+            {% if movie.url %}
+            <a href="{{ movie.url }}" class="btn btn-outline-primary">Movie Link</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
