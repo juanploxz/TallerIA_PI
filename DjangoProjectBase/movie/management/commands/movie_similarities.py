@@ -8,8 +8,15 @@ class Command(BaseCommand):
     help = "Compare two movies and a prompt using embeddings"
 
     def handle(self, *args, **kwargs):
-        movie1 = Movie.objects.get(title="La lista de Schindler")
-        movie2 = Movie.objects.get(title="El club de la pelea")
+        movie1 = Movie.objects.filter(title__icontains="Schindler").first()
+        movie2 = Movie.objects.filter(title__icontains="club").first()
+
+        if not movie1 or not movie2:
+            movies = list(Movie.objects.exclude(description='').order_by('id')[:2])
+            if len(movies) < 2:
+                self.stderr.write("Not enough movies with descriptions to compare.")
+                return
+            movie1, movie2 = movies
 
         emb1 = get_embedding(movie1.description)
         emb2 = get_embedding(movie2.description)

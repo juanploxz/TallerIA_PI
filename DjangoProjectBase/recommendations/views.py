@@ -8,13 +8,15 @@ def search(request):
     movie = None
     similarity = None
     error = None
+    info = None
 
     if prompt:
         try:
             movie, similarity = find_best_movie_for_prompt(prompt)
             if movie is None:
-                error = (
-                    "No hay embeddings almacenados todavia. Ejecuta 'python manage.py movie_embeddings'."
+                info = (
+                    "No se encontro una recomendacion disponible. "
+                    "Verifica que existan embeddings cargados para las peliculas."
                 )
         except Exception as exc:
             error = str(exc)
@@ -27,5 +29,6 @@ def search(request):
             'movie': movie,
             'similarity': similarity,
             'error': error,
+            'info': info,
         },
     )
